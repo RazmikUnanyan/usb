@@ -23,7 +23,7 @@ let useMock = true;
 try {
     port = new SerialPort({ path: "COM", baudRate: 9600 });
     port.on("open", () => {
-        console.log("USB connected on COM3");
+        console.log("USB connected on COM");
         useMock = false;
     });
     port.on("error", (err) => {
