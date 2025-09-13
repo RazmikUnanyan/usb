@@ -38,7 +38,7 @@ app.get("/stream", async (req, res) => {
         if (!com3) throw new Error("COM3 not found");
 
         // Открываем порт
-        port = new SerialPort({ path: "COM3", baudRate: 9600 });
+        port = new SerialPort({ path: "COM3", baudRate: 115200 });
 
         port.on("open", () => {
             console.log("USB connected on COM3");
@@ -60,35 +60,7 @@ app.get("/stream", async (req, res) => {
 
         // Мокаем поток
         interval = setInterval(() => {
-            let value = 0;
-
-            switch (phase) {
-                case "low":
-                    value = Math.floor(Math.random() * 2); // 0 или 1
-                    if (counter > 40) phase = "rise";
-                    break;
-
-                case "rise":
-                    value = Math.floor(Math.random() * 4 + 6); // 6..9
-                    phase = "high";
-                    counter = 0;
-                    break;
-
-                case "high":
-                    value = Math.floor(Math.random() * 3 + 7); // 7..9
-                    if (counter > 50) phase = "fall";
-                    break;
-
-                case "fall":
-                    value = Math.floor(Math.random() * 5); // 0..4
-                    if (value <= 1) {
-                        phase = "low";
-                        counter = 0;
-                    }
-                    break;
-            }
-
-            sendPacket(value);
+            sendPacket(1);
             counter++;
         }, 100);
     }
