@@ -11,7 +11,7 @@ let counter = 0;
 
 // Разрешаем CORS для фронтенда
 app.use(cors({
-    origin: "https://usb-8dfb.vercel.app", 
+    origin: "https://usb-red.vercel.app",
     methods: ["GET", "OPTIONS"],
     allowedHeaders: ["Content-Type"]
 }));
