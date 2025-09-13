@@ -27,7 +27,7 @@ export default function CustomRealtimeChart() {
     const [data, setData] = useState<DataPacket[]>([]);
 
     useEffect(() => {
-        const source = new EventSource("http://localhost:4000/stream");
+        const source = new EventSource("https://usb-keln.onrender.com/stream");
 
         source.onmessage = (event) => {
             const { counter, value } = JSON.parse(event.data);
