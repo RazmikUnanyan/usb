@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const { SerialPort } = require("serialport");
 
 const app = express();
@@ -8,12 +9,19 @@ const THRESHOLD = 5;
 let phase = "low";
 let counter = 0;
 
+// Разрешаем CORS для фронтенда
+app.use(cors({
+    origin: "https://usb-8dfb.vercel.app", 
+    methods: ["GET", "OPTIONS"],
+    allowedHeaders: ["Content-Type"]
+}));
+
 // Изначально считаем, что порт недоступен
 let port;
 let useMock = true;
 
 try {
-    port = new SerialPort({ path: "COM3", baudRate: 9600 });
+    port = new SerialPort({ path: "COM", baudRate: 9600 });
     port.on("open", () => {
         console.log("USB connected on COM3");
         useMock = false;
@@ -27,16 +35,14 @@ try {
     useMock = true;
 }
 
-
 // SSE endpoint
 app.get("/stream", (req, res) => {
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
     res.setHeader("Connection", "keep-alive");
-    res.setHeader("Access-Control-Allow-Origin", "https://usb-8dfb.vercel.app/");
 
     const sendPacket = (value) => {
-        const packet = JSON.stringify({ counter, value });
+        const packet = JSON.stringify([value]);
         res.write(`data: ${packet}\n\n`);
         counter++;
     };
@@ -48,25 +54,39 @@ app.get("/stream", (req, res) => {
         interval = setInterval(() => {
             let value = 0;
 
-            if (phase === "low") {
-                value = Math.random() * 0.5;
-                if (counter > 40) phase = "rise";
-            } else if (phase === "rise") {
-                value = Math.min(10, value + Math.random() * 1.5);
-                if (value >= THRESHOLD + 2) phase = "high";
-            } else if (phase === "high") {
-                value = THRESHOLD + 2 + Math.random();
-                if (counter > 80) phase = "fall";
-            } else if (phase === "fall") {
-                value = Math.max(0, value - Math.random() * 1.5);
-                if (value <= 0.5) {
-                    phase = "low";
-                    counter = 0;
-                }
+            switch (phase) {
+                case "low":
+                    // Низкая фаза: значения около 0
+                    value = Math.floor(Math.random() * 2); // 0 или 1
+                    if (counter > 40) phase = "rise";
+                    break;
+
+                case "rise":
+                    // Резкий скачок вверх
+                    value = Math.floor(Math.random() * 4 + 6); // 6..9
+                    phase = "high";
+                    counter = 0; // сбрасываем счетчик для high
+                    break;
+
+                case "high":
+                    // Удерживаем высокое значение
+                    value = Math.floor(Math.random() * 3 + 7); // 7..9
+                    if (counter > 50) phase = "fall"; // держим high некоторое время
+                    break;
+
+                case "fall":
+                    // Падение обратно к нулю
+                    value = Math.floor(Math.random() * 5); // 0..4
+                    if (value <= 1) {
+                        phase = "low";
+                        counter = 0;
+                    }
+                    break;
             }
 
             sendPacket(value);
-        }, 50);
+            counter++;
+        }, 100)
     } else {
         // Real USB mode
         port.on("data", (chunk) => {

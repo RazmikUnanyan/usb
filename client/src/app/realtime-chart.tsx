@@ -30,11 +30,10 @@ export default function CustomRealtimeChart() {
         const source = new EventSource("https://usb-keln.onrender.com/stream");
 
         source.onmessage = (event) => {
-            const { counter, value } = JSON.parse(event.data);
-
+            const data = JSON.parse(event.data);
             setData((prev) => {
                 const newX = prev.length * STEP < MAX_X ? prev.length * STEP : MAX_X;
-                let newData = [...prev, { x: newX, value }];
+                let newData = [...prev, { x: newX, value: data ? data[0]  : null}];
 
                 // Сдвиг влево при достижении MAX_X
                 if (newX >= MAX_X) {
