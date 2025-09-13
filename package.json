@@ -1,0 +1,14 @@
+{
+  "name": "usb-desktop",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "dev:desktop": "concurrently \"pnpm --prefix client dev\" \"pnpm start-server && electron .\"",
+    "start-server": "node server/server.js",
+    "start": "electron ."
+  },
+  "dependencies": {
+    "concurrently": "^9.2.1",
+    "electron": "^38.1.0"
+  }
+}

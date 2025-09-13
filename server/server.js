@@ -9,12 +9,12 @@ const THRESHOLD = 5;
 let phase = "low";
 let counter = 0;
 
-// Разрешаем CORS для фронтенда
-app.use(cors({
-    origin: "https://usb-red.vercel.app",
-    methods: ["GET", "OPTIONS"],
-    allowedHeaders: ["Content-Type"]
-}));
+// // Разрешаем CORS для фронтенда
+// app.use(cors({
+//     origin: "https://usb-red.vercel.app",
+//     methods: ["GET", "OPTIONS"],
+//     allowedHeaders: ["Content-Type"]
+// }));
 
 // Изначально считаем, что порт недоступен
 let port;
