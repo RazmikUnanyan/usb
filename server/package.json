@@ -1,0 +1,14 @@
+{
+  "name": "usb-serial-server",
+  "version": "1.0.0",
+  "description": "Node.js SSE server for USB serial or mock data",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "serialport": "^11.1.0",
+  }
+}
