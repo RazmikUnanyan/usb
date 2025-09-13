@@ -31,6 +31,7 @@ export default function CustomRealtimeChart() {
 
         source.onmessage = (event) => {
             const data = JSON.parse(event.data);
+            console.log('data',data);
             setData((prev) => {
                 const newX = prev.length * STEP < MAX_X ? prev.length * STEP : MAX_X;
                 let newData = [...prev, { x: newX, value: data ? data[0]  : null}];
