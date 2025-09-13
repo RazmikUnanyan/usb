@@ -33,7 +33,7 @@ app.get("/stream", (req, res) => {
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
     res.setHeader("Connection", "keep-alive");
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.setHeader("Access-Control-Allow-Origin", "https://usb-8dfb.vercel.app/");
 
     const sendPacket = (value) => {
         const packet = JSON.stringify({ counter, value });
