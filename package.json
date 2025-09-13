@@ -1,14 +1,52 @@
 {
   "name": "usb-desktop",
   "version": "1.0.0",
+  "description": "USB Desktop application with Node.js server and Next.js frontend",
+  "author": "Razmik Unanian",
   "main": "main.js",
   "scripts": {
-    "dev:desktop": "concurrently \"pnpm --prefix client dev\" \"pnpm start-server && electron .\"",
+    "dev:desktop": "concurrently \"pnpm --prefix client dev\" \"pnpm start-server\" \"electron .\"",
     "start-server": "node server/server.js",
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "dependencies": {
-    "concurrently": "^9.2.1",
-    "electron": "^38.1.0"
+    "concurrently": "^9.2.1"
+  },
+  "devDependencies": {
+    "electron": "^38.1.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.razmik.usb",
+    "productName": "USB Desktop",
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "server/**/*",
+      "client/.next/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "extraResources": [
+      {
+        "from": "server/",
+        "to": "server/"
+      },
+      {
+        "from": "client/.next/",
+        "to": "client/.next/"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    }
   }
 }
