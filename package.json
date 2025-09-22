@@ -26,26 +26,32 @@
     },
     "files": [
       "main.js",
-      "server/**/*",
-      "client/.next/**/*",
-      "node_modules/**/*",
+      "server/**",
+      "client/out/**",
       "package.json"
     ],
-    "asar": true,
     "extraResources": [
       {
         "from": "server/",
         "to": "server/"
       },
       {
-        "from": "client/.next/",
-        "to": "client/.next/"
+        "from": "client/out/",
+        "to": "client/out/"
       }
     ],
+    "asar": true,
     "win": {
       "target": [
         "nsis",
         "portable"
+      ]
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "dmg",
+        "zip"
       ]
     }
   }

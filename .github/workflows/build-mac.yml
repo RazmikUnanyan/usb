@@ -1,0 +1,42 @@
+name: Build macOS App
+
+on:
+  workflow_dispatch: # запуск вручную
+  push:
+    branches:
+      - main
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build client
+        run: pnpm --prefix client build
+
+      - name: Build Electron app for macOS
+        run: pnpm electron-builder --mac dmg zip
+
+      - name: Upload artifacts (.dmg, .zip, .app)
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-build
+          path: |
+            dist/*.dmg
+            dist/*.zip
+            dist/mac/*.app

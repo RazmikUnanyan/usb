@@ -13,15 +13,8 @@ function createWindow() {
         }
     });
 
-    if (process.env.NODE_ENV === "development") {
-        // 🔹 В режиме разработки
-        mainWindow.loadURL("http://localhost:3000");
-    } else {
-        // 🔹 В продакшне открываем Vercel или локально собранный фронт
-        mainWindow.loadURL("https://usb-red.vercel.app/");
-        // 👉 Если хотите грузить локально из build:
-        // mainWindow.loadFile(path.join(__dirname, "client/out/index.html"));
-    }
+    const indexPath = path.join(__dirname, "client", "out", "index.html");
+    mainWindow.loadFile(indexPath);
 
     mainWindow.on("closed", () => {
         mainWindow = null;

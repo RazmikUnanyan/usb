@@ -7,7 +7,7 @@ const PORT = 4000;
 
 // Разрешаем CORS для фронтенда
 app.use(cors({
-    origin: "https://usb-red.vercel.app",
+    origin: "*",
     methods: ["GET", "OPTIONS"],
     allowedHeaders: ["Content-Type"]
 }));

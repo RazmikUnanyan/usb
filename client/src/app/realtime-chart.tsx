@@ -27,16 +27,15 @@ export default function CustomRealtimeChart() {
     const [data, setData] = useState<DataPacket[]>([]);
 
     useEffect(() => {
-        const source = new EventSource("https://usb-keln.onrender.com/stream");
+        const source = new EventSource("http://localhost:4000/stream");
 
         source.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            console.log('data',data);
+            console.log("data", data);
             setData((prev) => {
                 const newX = prev.length * STEP < MAX_X ? prev.length * STEP : MAX_X;
-                let newData = [...prev, { x: newX, value: data ? data[0]  : null}];
+                let newData = [...prev, { x: newX, value: data ? data[0] : null }];
 
-                // Сдвиг влево при достижении MAX_X
                 if (newX >= MAX_X) {
                     newData = newData
                         .map((p) => ({ x: p.x - STEP, value: p.value }))
@@ -51,6 +50,7 @@ export default function CustomRealtimeChart() {
             source.close();
         };
     }, []);
+
 
     const areaData = data.map((p) => ({
         x: p.x,
