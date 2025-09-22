@@ -31,7 +31,7 @@ jobs:
         working-directory: client
 
       - name: Build Electron app for macOS
-        run: npx --yes electron-builder --mac dmg zip
+        run: npx --yes electron-builder --mac dmg zip --publish=never
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
