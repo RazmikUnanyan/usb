@@ -19,11 +19,16 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm install
 
+      - name: Install client dependencies
+        run: npm install
+        working-directory: client
+
       - name: Build client
-        run: npm --prefix client run build
+        run: npm run build
+        working-directory: client
 
       - name: Build Electron app for macOS
         run: npx --yes electron-builder --mac dmg zip
