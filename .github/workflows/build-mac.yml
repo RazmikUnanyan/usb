@@ -1,7 +1,7 @@
 name: Build macOS App
 
 on:
-  workflow_dispatch: # запуск вручную
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -20,15 +20,15 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Build client
         run: npm --prefix client run build
 
       - name: Build Electron app for macOS
-        run: npx electron-builder --mac dmg zip
+        run: npx --yes electron-builder --mac dmg zip
 
-      - name: Upload artifacts (.dmg, .zip, .app)
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: macOS-build
